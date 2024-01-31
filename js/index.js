@@ -4,7 +4,7 @@ import('../pkg/index.js').then(module => {
     
     document.getElementById('button').addEventListener('click', function () {
         const inputNumber = document.getElementById('inputNumber').valueAsNumber;
-        const result = add(inputNumber, 3); // Use inputNumber in the add function
+        const result = add(inputNumber, 3); 
         document.getElementById('result').textContent = `Result: ${result}`;
     });
 });
