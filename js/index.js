@@ -1,14 +1,6 @@
 // js/index.js
 import data from '../data/kanjies.json';
-import('../pkg/index.js').then(module => {
-    const { add } = module;
 
-    document.getElementById('button').addEventListener('click', function () {
-        const inputNumber = document.getElementById('inputNumber').valueAsNumber;
-        const result = add(inputNumber, 3);
-        document.getElementById('result').textContent = `Result: ${result}`;
-    });
-});
 const dataArray = Object.values(data);
 
 import('../pkg/index.js').then(module => {
@@ -20,11 +12,11 @@ import('../pkg/index.js').then(module => {
         const result = search_kanji_by_stroke_count(inputNumber, data);
         
         if (result.size > 0) {
-            document.getElementById('result').textContent = `Result: ${result}`;
-            
             // Loop through the result and display the kanji in a new div which contains an H1 for the key, and a p tag for the value
             const resultDiv = document.getElementById('resultDiv');
+            const howManyF = document.getElementById('kanji');
             resultDiv.innerHTML = '';
+            howManyF.innerHTML = result.size + " kanji found";
             
             let counter = 0;  // Counter to keep track of divs in a row
             let currentRow;   // Variable to hold the current row div
@@ -61,11 +53,17 @@ import('../pkg/index.js').then(module => {
                 currentRow.appendChild(newDiv);
                 counter++;
             });
-        } else {
-            document.getElementById('result').textContent = `Result: No result`;
-
+        }else if (inputNumber && result.size === 0) {
+            const howManyF = document.getElementById('kanji');
+            howManyF.innerHTML = result.size + " kanji found";
             const resultDiv = document.getElementById('resultDiv');
             resultDiv.innerHTML = '';
+        } 
+        else {
+            const resultDiv = document.getElementById('resultDiv');
+            resultDiv.innerHTML = '';
+            const howManyF = document.getElementById('kanji');
+            howManyF.innerHTML = 'Enter a number';
         }
     });
 

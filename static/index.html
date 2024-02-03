@@ -1,22 +1,19 @@
 <!DOCTYPE html>
-<html>
+<html id="html">
   <head>
     <meta charset="UTF-8">
     <title>My Rust + Webpack project!</title>
 
   </head>
   <body>
-    <h1>My Rust + Webpack project!</h1>
+    <h1 id="h1">Kanji Database</h1>
     <div id="root">
-      <input type="number" id="inputNumber" placeholder="Enter a number" />
-      <button id="button">Add</button>
-      <p id="result">Result: </p>
+      <input type="number" id="inputNumber" placeholder="Enter a number to search Kanji" />
+      <h2 id="kanji"></h2>
     </div>
 
     <div>
-      <h2>Some Rust code:</h2>
       <pre id="rustOutput"></pre>
-      <button id="rustButton">Run Rust code</button>
     </div>
 
     <div id="resultDiv"></div>

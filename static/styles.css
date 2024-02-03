@@ -1,17 +1,63 @@
 #resultDiv {
   display: flex;
   flex-wrap: wrap;
+  justify-content: center;
 }
 
 .result-item {
-  border: 1px solid black; 
+  box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
   margin: 10px; 
+  border-radius: 20px;
+  background: white;
+  color: black;
   padding: 10px; 
   width: calc(25% - 20px); 
 }
 
 .row {
   display: flex;
-  justify-content: space-between;
+  justify-content: center;
   width: 100%;
+}
+
+#kanji{
+  font-size: 50px;
+  text-align: center;
+  margin: 0;
+  padding: 20px;
+
+}
+#html {
+  background:  #0d81af;
+  color: white;
+  height: 100vh;
+    /* Set text color for better visibility */
+}
+
+#inputNumber {
+  width: 50%;
+  padding: 12px 20px;
+  margin: 8px auto;
+  box-sizing: border-box;
+  border: 2px solid #ccc;
+  border-radius: 4px;
+  text-align: center;
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+#h1 {
+  text-align: center;
+  font-size: 50px;
+  margin: 0;
+  padding: 20px;
+}
+
+    
+#notFound {
+  text-align: center;
+  font-size: 30px;
+  margin: 0;
+  padding: 20px;
 }

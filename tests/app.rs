@@ -17,6 +17,7 @@ fn rust_test() {
 #[wasm_bindgen_test]
 fn web_test() {
     assert_eq!(1, 1);
+
 }
 
 
