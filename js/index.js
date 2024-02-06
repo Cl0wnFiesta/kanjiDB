@@ -1,15 +1,10 @@
 // js/index.js
-import data from '../data/kanjies.json';
-
-const dataArray = Object.values(data);
-
 import('../pkg/index.js').then(module => {
     const { search_kanji_by_stroke_count } = module;
-    console.log(dataArray);
 
     document.getElementById('inputNumber').addEventListener('input', function () {
         const inputNumber = document.getElementById('inputNumber').valueAsNumber;
-        const result = search_kanji_by_stroke_count(inputNumber, data);
+        const result = search_kanji_by_stroke_count(inputNumber);
         
         if (result.size > 0) {
             // Loop through the result and display the kanji in a new div which contains an H1 for the key, and a p tag for the value
@@ -23,7 +18,6 @@ import('../pkg/index.js').then(module => {
             
             result.forEach((value, key) => {
                 if (counter % 4 === 0) {
-                    console.log("apina");
                     // Create a new row div for every 4 divs
                     currentRow = document.createElement('div');
                     currentRow.classList.add('row');
@@ -40,9 +34,9 @@ import('../pkg/index.js').then(module => {
 
                 newH1.textContent = key;
                 newP.textContent = "Stroke: " + value.strokes;
-                meaning.textContent = "Meaning: " + value.meanings.join(', ');
-                onP.textContent = "On reading: " + value.readings_on.join(', ');
-                kunP.textContent = "Kun reading: " + value.readings_kun.join(', ');
+                meaning.textContent = "Meaning: " + (value.meanings.length == 0 ? "No meaning found" : value.meanings.join(', '));
+                onP.textContent = "On reading: " + (value.readings_on.length == 0 ? "No on reading found" : value.readings_on.join(', '));
+                kunP.textContent = "Kun reading: " + (value.readings_kun.length == 0 ? "No kun reading found" : value.readings_kun.join(', '));
 
                 newDiv.appendChild(newH1);
                 newDiv.appendChild(newP);
@@ -70,6 +64,5 @@ import('../pkg/index.js').then(module => {
     document.getElementById('rustButton').addEventListener('click', function () {
         const inputNumber = document.getElementById('inputNumber').valueAsNumber;
         const result = search_kanji_by_stroke_count(inputNumber, data);
-        console.log(result);
     });
 });

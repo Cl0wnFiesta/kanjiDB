@@ -5,6 +5,8 @@ use wasm_bindgen::JsValue;
 use web_sys::console; 
 use web_sys::js_sys::Object;
 use web_sys::js_sys::Reflect;
+use std::include_str;
+
 
 // When the `wee_alloc` feature is enabled, this uses `wee_alloc` as the global
 // allocator.
@@ -18,60 +20,44 @@ static ALLOC: wee_alloc::WeeAlloc = wee_alloc::WeeAlloc::INIT;
 pub struct KanjiData {
     // Define your data structure here based on your JSON format
     // For example:
-    strokes: i32,
-    grade: i32,
-    freq: i32,
-    jlpt_old: i32,
-    jlpt_new: i32,
-    meanings: Vec<String>,
-    readings_on: Vec<String>,
-    readings_kun: Vec<String>,
-    wk_level: i32,
-    wk_meanings: Vec<String>,
-    wk_readings_on: Vec<String>,
-    wk_readings_kun: Vec<String>,
-    wk_radicals: Vec<String>,
+    strokes: Option<i32>,
+    grade: Option<i32>,
+    freq: Option<i32>,
+    jlpt_old: Option<i32>,
+    jlpt_new: Option<i32>,
+    meanings: Option<Vec<String>>,
+    readings_on: Option<Vec<String>>,
+    readings_kun: Option<Vec<String>>,
+    wk_level: Option<i32>,
+    wk_meanings: Option<Vec<String>>,
+    wk_readings_on: Option<Vec<String>>,
+    wk_readings_kun: Option<Vec<String>>,
+    wk_radicals: Option<Vec<String>>,
+}
+
+fn read_file() -> HashMap<String, KanjiData>{
+    let json = include_str!("../data/kanjies.json");
+    let kanji_data: HashMap<String, KanjiData> = serde_json::from_str(json).unwrap();
+    kanji_data
 }
 
 #[wasm_bindgen]
-pub extern "C" fn search_kanji_by_stroke_count(stroke_count: i32, json_object: Object) -> JsValue {
-    // An empty HashMap to store matching items
-    let mut matching_kanji: HashMap<String, KanjiData> = HashMap::new();
-    
-    // Get the keys of the object
-    let keys = Reflect::own_keys(&json_object).unwrap();
-    
-    // Loop through each key in the object
-    for i in 0..keys.length() {
-        let key = keys.get(i).as_string().unwrap();
-        
-        // Get the value (KanjiData) associated with the key
-        let value = Reflect::get(&json_object, &JsValue::from_str(&key));
-        
-        // Match on the Result to handle potential errors
-        if let Ok(value) = value {
-            // Deserialize the value into a KanjiData struct
-            let kanji_data: Result<KanjiData, _> = serde_wasm_bindgen::from_value(value);
-            
-            // Match on the Result to handle potential errors
-            if let Ok(kanji_data) = kanji_data {
-                // Check if the strokes match the input stroke_count
-                if kanji_data.strokes == stroke_count {
-                    // Insert into the HashMap if there is a match
-                    matching_kanji.insert(key, kanji_data);
-                }
-            }
+pub extern "C" fn search_kanji_by_stroke_count(stroke_count: i32) -> JsValue {
+    let kanji_data = read_file();
+    let mut result = HashMap::new();
+    for (key, value) in kanji_data.iter() {
+        if value.strokes.unwrap() == stroke_count {
+            result.insert(key.clone(), value.clone());
         }
     }
+    serde_wasm_bindgen::to_value(&result).unwrap_or_else(|err| JsValue::NULL)
     
-    // Serialize the result (HashMap) to JsValue
-    serde_wasm_bindgen::to_value(&matching_kanji).unwrap_or_else(|err| JsValue::NULL)
 }
 
 
 #[wasm_bindgen]
-pub fn search_kanji_by_stroke_count_for_test(stroke_count: i32, json_object: Object) -> JsValue {
-    search_kanji_by_stroke_count(stroke_count, json_object)
+pub fn search_kanji_by_stroke_count_for_test(stroke_count: i32) -> JsValue {
+    search_kanji_by_stroke_count(stroke_count)
 }
 
 // This is like the `main` function, except for JavaScript.
@@ -82,8 +68,15 @@ pub fn main_js() -> Result<(), JsValue> {
     #[cfg(debug_assertions)]
 
     console_error_panic_hook::set_once();
-
-    console::log_1(&JsValue::from_str("Hello world!"));
+    let _ = read_file();
 
     Ok(())
 }
+
+pub mod some_module {
+    pub fn function_to_test() {
+        // function body
+    }
+}
+
+pub use some_module::function_to_test;
