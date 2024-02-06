@@ -35,8 +35,8 @@ import('../pkg/index.js').then(module => {
                 newH1.textContent = key;
                 newP.textContent = "Stroke: " + value.strokes;
                 meaning.textContent = "Meaning: " + (value.meanings.length == 0 ? "No meaning found" : value.meanings.join(', '));
-                onP.textContent = "On reading: " + (value.readings_on.length == 0 ? "No on reading found" : value.readings_on.join(', '));
-                kunP.textContent = "Kun reading: " + (value.readings_kun.length == 0 ? "No kun reading found" : value.readings_kun.join(', '));
+                onP.textContent = "On reading: " + (value.readings_on.length == 0 ? "No on reading found" : value.readings_on.join(' and  '));
+                kunP.textContent = "Kun reading: " + (value.readings_kun.length == 0 ? "No kun reading found" : value.readings_kun.join(' and '));
 
                 newDiv.appendChild(newH1);
                 newDiv.appendChild(newP);
