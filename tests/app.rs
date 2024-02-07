@@ -2,6 +2,7 @@ use wasm_bindgen_test::{wasm_bindgen_test_configure, wasm_bindgen_test};
 use futures::prelude::*;
 use wasm_bindgen::JsValue;
 use wasm_bindgen_futures::JsFuture;
+use kanji_search::search_kanji_by_stroke_count;
 
 wasm_bindgen_test_configure!(run_in_browser);
 
@@ -17,7 +18,6 @@ fn rust_test() {
 #[wasm_bindgen_test]
 fn web_test() {
     assert_eq!(1, 1);
-
 }
 
 

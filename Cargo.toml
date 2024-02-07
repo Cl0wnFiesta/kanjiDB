@@ -9,7 +9,7 @@ readme = "README.md"
 edition = "2018"
 
 [lib]
-crate-type = ["cdylib"]
+crate-type = ["rlib"]
 name = "kanji_search"
 path = "src/lib.rs"
 
