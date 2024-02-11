@@ -28,7 +28,6 @@ struct KanjiData {
 
 #[wasm_bindgen_test]
 fn wasm_test_search_kanji_by_stroke_count() {
-    // Convert JsValue to a JSON string
     let result: JsValue = search_kanji_by_stroke_count(1);
 
     // Check if result is an object
@@ -47,7 +46,6 @@ fn wasm_test_search_kanji_by_stroke_count() {
         assert_eq!(first_kanji_name, "一");
         assert_eq!(second_kanji_name, "乙");
 
-        // Assert the length of keys
     } else {
         // Handle the case when result is not an object
         panic!("Result is not an object");
