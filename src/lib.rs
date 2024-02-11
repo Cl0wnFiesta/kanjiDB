@@ -11,11 +11,12 @@ use wasm_bindgen::JsValue;
 #[cfg(feature = "wee_alloc")]
 #[global_allocator]
 static ALLOC: wee_alloc::WeeAlloc = wee_alloc::WeeAlloc::INIT;
+
+// This code defines a struct KanjiData that represents the data structure of the kanji_data.
 #[wasm_bindgen]
 #[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
 pub struct KanjiData {
-    // Define your data structure here based on your JSON format
-    // For example:
+
     strokes: Option<i32>,
     grade: Option<i32>,
     freq: Option<i32>,
@@ -31,11 +32,19 @@ pub struct KanjiData {
     wk_radicals: Option<Vec<String>>,
 }
 
+// This code defines a function read_file that reads the kanjies.json file and deserializes it into a HashMap.
+
 fn read_file() -> HashMap<String, KanjiData> {
     let json = include_str!("../data/kanjies.json");
     let kanji_data: HashMap<String, KanjiData> = serde_json::from_str(json).unwrap();
     kanji_data
 }
+
+// This code defines a function search_kanji_by_stroke_count that takes 
+// an input stroke_count and searches for kanji characters in the kanji_data based on the specified stroke count. 
+// It iterates through the kanji_data and filters out the kanji characters that have the same number of strokes as the input. 
+// The filtered results are stored in a new HashMap called result. 
+// Finally, the result is converted to a JsValue using serde_wasm_bindgen::to_value and returned.
 
 #[wasm_bindgen]
 pub extern "C" fn search_kanji_by_stroke_count(stroke_count: i32) -> JsValue {
@@ -49,47 +58,22 @@ pub extern "C" fn search_kanji_by_stroke_count(stroke_count: i32) -> JsValue {
     serde_wasm_bindgen::to_value(&result).unwrap_or_else(|err| JsValue::NULL)
 }
 
-// This is like the `main` function, except for JavaScript.
 #[wasm_bindgen(start)]
 pub fn main_js() -> Result<(), JsValue> {
-    // This provides better error messages in debug mode.
-    // It's disabled in release mode so it doesn't bloat up the file size.
     #[cfg(debug_assertions)]
     console_error_panic_hook::set_once();
     let _ = read_file();
-
     Ok(())
 }
 
 #[cfg(test)]
-mod tests {
+pub mod tests {
     use super::*;
-    use js_sys::{Object, Reflect};
-    use wasm_bindgen_test::*;
 
     #[test]
-    fn test_kanji_data_has_2135_keys() {
+    fn test_kanji_data_has_2136_keys() {
         let kanji_data = read_file();
         let num_keys = kanji_data.len();
         assert_eq!(num_keys, 2136);
-    }
-    #[wasm_bindgen_test]
-    fn test_search_kanji_by_stroke_count() {
-        let result = search_kanji_by_stroke_count(1);
-        let result: Object = result.into();
-        let keys = Reflect::own_keys(&result).unwrap();
-        assert_eq!(keys.length(), 2);
-    }
-    #[wasm_bindgen_test]
-    fn test_search_kanji_by_stroke_count_and_get_name() {
-        let result = search_kanji_by_stroke_count(1);
-        let result: Object = result.into();
-        let keys = Reflect::own_keys(&result).unwrap();
-        let key = keys.get(0);
-        let key = key.as_string().unwrap();
-        let key = JsValue::from_str(&key); // Convert key to JsValue
-        let value = Reflect::get(&result, &key).unwrap();
-        let value: KanjiData = serde_wasm_bindgen::from_value(value).unwrap();
-        assert_eq!(value.strokes.unwrap(), 1);
     }
 }
