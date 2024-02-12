@@ -16,7 +16,6 @@ static ALLOC: wee_alloc::WeeAlloc = wee_alloc::WeeAlloc::INIT;
 #[wasm_bindgen]
 #[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
 pub struct KanjiData {
-
     strokes: Option<i32>,
     grade: Option<i32>,
     freq: Option<i32>,
@@ -40,10 +39,10 @@ fn read_file() -> HashMap<String, KanjiData> {
     kanji_data
 }
 
-// This code defines a function search_kanji_by_stroke_count that takes 
-// an input stroke_count and searches for kanji characters in the kanji_data based on the specified stroke count. 
-// It iterates through the kanji_data and filters out the kanji characters that have the same number of strokes as the input. 
-// The filtered results are stored in a new HashMap called result. 
+// This code defines a function search_kanji_by_stroke_count that takes
+// an input stroke_count and searches for kanji characters in the kanji_data based on the specified stroke count.
+// It iterates through the kanji_data and filters out the kanji characters that have the same number of strokes as the input.
+// The filtered results are stored in a new HashMap called result.
 // Finally, the result is converted to a JsValue using serde_wasm_bindgen::to_value and returned.
 
 #[wasm_bindgen]
